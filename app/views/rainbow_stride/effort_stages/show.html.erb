@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @effort_stage %>
+
+<div>
+  <%= link_to "Edit this effort stage", edit_effort_stage_path(@effort_stage) %> |
+  <%= link_to "Back to effort stages", effort_stages_path %>
+
+  <%= button_to "Destroy this effort stage", @effort_stage, method: :delete %>
+</div>
