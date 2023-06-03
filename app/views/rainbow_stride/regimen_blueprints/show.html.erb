@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @regimen_blueprint %>
+
+<div>
+  <%= link_to "Edit this regimen blueprint", edit_regimen_blueprint_path(@regimen_blueprint) %> |
+  <%= link_to "Back to regimen blueprints", regimen_blueprints_path %>
+
+  <%= button_to "Destroy this regimen blueprint", @regimen_blueprint, method: :delete %>
+</div>

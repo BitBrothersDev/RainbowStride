@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Regimen blueprints</h1>
+
+<div id="regimen_blueprints">
+  <% @regimen_blueprints.each do |regimen_blueprint| %>
+    <%= render regimen_blueprint %>
+    <p>
+      <%= link_to "Show this regimen blueprint", regimen_blueprint %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New regimen blueprint", new_regimen_blueprint_path %>
