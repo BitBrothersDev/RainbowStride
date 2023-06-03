@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Effort stages</h1>
+
+<div id="effort_stages">
+  <% @effort_stages.each do |effort_stage| %>
+    <%= render effort_stage %>
+    <p>
+      <%= link_to "Show this effort stage", effort_stage %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New effort stage", new_effort_stage_path %>
