@@ -8,8 +8,11 @@
   <%= stylesheet_link_tag    "rainbow_stride/application", media: "all" %>
 </head>
 <body>
-
-<%= yield %>
+<% render 'layouts/rainbow_stride/shared/navbar' %>
+<%= yield :header %>
+ <div class="container">
+   <%= yield %>
+ </div>
 
 </body>
 </html>

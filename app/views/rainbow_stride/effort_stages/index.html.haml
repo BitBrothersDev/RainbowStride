@@ -1,0 +1,23 @@
+.container
+  %h1 Rainbow Stride Effort Stages
+
+  .table-responsive
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Name
+          %th Created At
+          %th Updated At
+          %th Actions
+      %tbody
+        - @effort_stages.each do |effort_stage|
+          %tr
+            %td= effort_stage.name
+            %td= effort_stage.created_at
+            %td= effort_stage.updated_at
+            %td
+              = link_to 'Show', effort_stage_path(effort_stage), class: 'btn btn-primary btn-sm'
+              = link_to 'Edit', edit_effort_stage_path(effort_stage), class: 'btn btn-secondary btn-sm'
+              = link_to 'Delete', effort_stage_path(effort_stage), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+
+  = link_to 'New Effort Stage', new_effort_stage_path, class: 'btn btn-success'

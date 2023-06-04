@@ -1,4 +1,4 @@
 module RainbowStride
-  class ApplicationController < ActionController::Base
+  class ApplicationController < ApplicationController
   end
 end
