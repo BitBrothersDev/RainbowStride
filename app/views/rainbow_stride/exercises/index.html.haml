@@ -1,0 +1,23 @@
+.container
+  %h1 Rainbow Stride Exercises
+
+  .table-responsive
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Name
+          %th Created At
+          %th Updated At
+          %th Actions
+      %tbody
+        - @exercises.each do |exercise|
+          %tr
+            %td= exercise.name
+            %td= exercise.created_at
+            %td= exercise.updated_at
+            %td
+              = link_to 'Show', exercise_path(exercise), class: 'btn btn-primary btn-sm'
+              = link_to 'Edit', edit_exercise_path(exercise), class: 'btn btn-secondary btn-sm'
+              = link_to 'Delete', exercise_path(exercise), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+
+  = link_to 'New Exercise', new_exercise_path, class: 'btn btn-success'

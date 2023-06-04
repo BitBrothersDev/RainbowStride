@@ -1,0 +1,28 @@
+- content_for :header do
+  %nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    .container
+      = link_to "Rainbow", main_app.root_path, class: 'navbar-brand'
+      %button.navbar-toggler{"aria-controls" => "navbarSupportedContent", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-bs-target" => "#navbarSupportedContent", "data-bs-toggle" => "collapse", type: "button"}
+        %span.navbar-toggler-icon
+      #navbarSupportedContent.collapse.navbar-collapse
+        %ul.navbar-nav.me-auto.mb-2.mb-lg-0
+          %li.nav-item
+            = link_to "Home", main_app.root_path, class: 'nav-link'
+          %li.nav-item
+            = link_to "Exercises", exercises_path, class: 'nav-link'
+          %li.nav-item
+            = link_to "EffortStages", effort_stages_path, class: 'nav-link'
+          %li.nav-item
+            = link_to "RegimenBlueprints", regimen_blueprints_path, class: 'nav-link'
+        .d-flex
+          %ul.navbar-nav.me-auto.mb-2.mb-lg-0
+            - if current_user
+              -# <p>Logged in as <%= current_user.email %></p>
+              = link_to "Logout", rainbow_gate.destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'nav-link'
+            - else
+              %li.nav-item
+                = link_to "Login", rainbow_gate.new_user_session_path, class: 'nav-link'
+              %li.nav-item
+                = link_to "Sign up", rainbow_gate.new_user_registration_path, class: 'nav-link'
+          -# %input.form-control.me-2{"aria-label" => "Search", placeholder: "Search", type: "search"}/
+          -# %button.btn.btn-outline-success{type: "submit"} Search
