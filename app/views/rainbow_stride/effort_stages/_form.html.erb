@@ -1,6 +1,6 @@
-<%= form_with(model: effort_stage) do |form| %>
+<%= form_with(model: effort_stage, local: true, html: { class: 'needs-validation', novalidate: true }) do |form| %>
   <% if effort_stage.errors.any? %>
-    <div style="color: red">
+    <div class="alert alert-danger">
       <h2><%= pluralize(effort_stage.errors.count, "error") %> prohibited this effort_stage from being saved:</h2>
 
       <ul>
@@ -11,12 +11,12 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+  <div class="form-group mb-4">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="d-flex justify-content-end">
+    <%= form.submit class: 'btn btn-primary' %>
   </div>
 <% end %>

@@ -54,7 +54,7 @@ module RainbowStride
 
       # Only allow a list of trusted parameters through.
       def exercise_params
-        params.require(:exercise).permit(:name, :user_id)
+        params.require(:exercise).permit(:name, :rainbow_stride_effort_stage_id)
       end
   end
 end

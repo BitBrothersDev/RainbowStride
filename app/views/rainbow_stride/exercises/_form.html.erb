@@ -1,6 +1,6 @@
-<%= form_with(model: exercise) do |form| %>
+<%= form_with(model: exercise, local: true, html: { class: 'needs-validation p-3', novalidate: true }) do |form| %>
   <% if exercise.errors.any? %>
-    <div style="color: red">
+    <div class="alert alert-danger">
       <h2><%= pluralize(exercise.errors.count, "error") %> prohibited this exercise from being saved:</h2>
 
       <ul>
@@ -11,17 +11,26 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
+  <div class="d-flex justify-content-center">
+    <div class="col-md-6">
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <div class="form-group">
+            <%= form.label :name %>
+            <%= form.text_field :name, class: 'form-control' %>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <%= form.label :effort_stage_id, "Effort Stage" %>
+            <%= form.collection_select :rainbow_stride_effort_stage_id, RainbowStride::EffortStage.all, :id, :name, { prompt: 'Select Effort Stage' }, { class: 'form-control' } %>
+          </div>
+        </div>
+      </div>
 
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+      <div class="form-group d-flex justify-content-end">
+        <%= form.submit class: 'btn btn-primary' %>
+      </div>
+    </div>
   </div>
 <% end %>

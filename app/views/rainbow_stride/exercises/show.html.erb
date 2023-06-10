@@ -1,10 +1,18 @@
-<p style="color: green"><%= notice %></p>
+<div class="container py-4">
+  <% if notice %>
+    <div class="alert alert-success" role="alert">
+      <%= notice %>
+    </div>
+  <% end %>
 
-<%= render @exercise %>
+  <%= render @exercise %>
 
-<div>
-  <%= link_to "Edit this exercise", edit_exercise_path(@exercise) %> |
-  <%= link_to "Back to exercises", exercises_path %>
+  <div class="row mt-4 mb-2">
+    <div class="col-md-12 text-center">
+      <%= link_to "Edit this exercise", edit_exercise_path(@exercise), class: 'btn btn-warning me-3 mb-2' %> |
+      <%= link_to "Back to exercises", exercises_path, class: 'btn btn-secondary ms-3 mb-2' %>
 
-  <%= button_to "Destroy this exercise", @exercise, method: :delete %>
+      <%= button_to "Destroy this exercise", @exercise, method: :delete, class: 'btn btn-danger ms-3' %>
+    </div>
+  </div>
 </div>
