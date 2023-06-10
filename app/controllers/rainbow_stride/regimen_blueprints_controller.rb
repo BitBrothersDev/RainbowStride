@@ -54,7 +54,7 @@ module RainbowStride
 
       # Only allow a list of trusted parameters through.
       def regimen_blueprint_params
-        params.require(:regimen_blueprint).permit(:title, :duration)
+        params.require(:regimen_blueprint).permit(:title, :duration, exercise_ids: [])
       end
   end
 end

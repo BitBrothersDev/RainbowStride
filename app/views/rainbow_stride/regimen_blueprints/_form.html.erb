@@ -1,6 +1,6 @@
-<%= form_with(model: regimen_blueprint) do |form| %>
+<%= form_with(model: regimen_blueprint, local: true, html: { class: 'needs-validation', novalidate: true }) do |form| %>
   <% if regimen_blueprint.errors.any? %>
-    <div style="color: red">
+    <div class="alert alert-danger">
       <h2><%= pluralize(regimen_blueprint.errors.count, "error") %> prohibited this regimen_blueprint from being saved:</h2>
 
       <ul>
@@ -11,17 +11,95 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+  <div class="form-group">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :duration %>
+    <%= form.datetime_field :duration, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :selected_exercises, "Selected Exercises" %>
+    <ul id="selected-exercises" class="list-group">
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :effort_stage_id, "Effort Stage" %>
+    <%= select_tag 'effort_stage_id', options_from_collection_for_select(RainbowStride::EffortStage.all, :id, :name, { include_blank: 'Please select an effort stage' }), { class: 'form-control', id: 'effort-stage-select', name: nil } %>
+  </div>
+
+  <div class="form-group" id="exercises-container">
+    <% RainbowStride::EffortStage.all.each do |effort_stage| %>
+      <% effort_stage.exercises.each do |exercise| %>
+        <div class="form-check" data-effort-stage-id="<%= effort_stage.id %>">
+          <%= form.check_box :exercise_ids, {multiple: true, class: 'form-check-input'}, exercise.id, nil %>
+          <%= form.label "exercise_ids_#{exercise.id}", exercise.name, class: 'form-check-label' %>
+        </div>
+      <% end %>
+    <% end %>
   </div>
 
   <div>
-    <%= form.label :duration, style: "display: block" %>
-    <%= form.datetime_field :duration %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <%= form.submit class: 'btn btn-primary' %>
   </div>
 <% end %>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const exercisesContainer = document.getElementById('exercises-container');
+        const exercisesChecks = exercisesContainer.querySelectorAll(".form-check");
+        const selectedExercises = document.getElementById('selected-exercises');
+        const effortStageSelect = document.getElementById('effort-stage-select');
+        const selectedExerciseIds = <%= @regimen_blueprint.exercise_ids.present? ? @regimen_blueprint.exercise_ids.to_json.html_safe : '[]' %>;
+
+        exercisesChecks.forEach(ele => ele.style.display = "none");
+
+        if (selectedExerciseIds.length) {
+            selectedExerciseIds.forEach(id => {
+                const input = document.getElementById(`regimen_blueprint_exercise_ids_${id}`);
+                if (input) {
+                    input.checked = true;
+                    const exerciseCheckbox = document.getElementById(`regimen_blueprint_exercise_ids_${id}`);
+                    const effortStageId = exerciseCheckbox.closest('.form-check').dataset.effortStageId;
+                    const effortStageLabel = document.querySelector(`#effort-stage-select option[value="${effortStageId}"]`).textContent;
+                    addExerciseToList(id, exerciseCheckbox.nextElementSibling.textContent, effortStageLabel);
+                }
+            });
+        }
+
+        effortStageSelect.addEventListener('change', function() {
+            const selectedEffortStageId = this.value;
+            exercisesChecks.forEach(ele => ele.style.display = "none");
+            const filteredExercises = exercisesContainer.querySelectorAll('.form-check[data-effort-stage-id="' + selectedEffortStageId + '"]');
+            filteredExercises.forEach(ele => ele.style.display = "block");
+        });
+
+        exercisesContainer.addEventListener('change', (e) => {
+            if (e.target.tagName === 'INPUT') {
+                const exerciseId = e.target.value;
+                const exerciseLabel = document.querySelector(`label[for="${e.target.id}"]`).textContent;
+                const effortStageId = event.target.closest('.form-check').dataset.effortStageId;
+                const effortStageLabel = document.querySelector(`#effort-stage-select option[value="${effortStageId}"]`).textContent;
+
+                if (e.target.checked) {
+                    addExerciseToList(exerciseId, exerciseLabel, effortStageLabel);
+                } else {
+                    const listItem = selectedExercises.querySelector(`[data-exercise-id="${exerciseId}"]`);
+                    selectedExercises.removeChild(listItem);
+                }
+            }
+        });
+
+        function addExerciseToList(exerciseId, exerciseLabel, effortStageLabel) {
+            const listItem = document.createElement('li');
+            listItem.classList.add('list-group-item');
+            listItem.dataset.exerciseId = exerciseId;
+            listItem.textContent = `${exerciseLabel} (${effortStageLabel})`;
+            selectedExercises.appendChild(listItem);
+        }
+    });
+</script>

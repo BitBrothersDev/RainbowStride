@@ -1,10 +1,20 @@
-<h1>Editing regimen blueprint</h1>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col">
+      <h1>Editing Regimen Blueprint</h1>
+    </div>
+  </div>
 
-<%= render "form", regimen_blueprint: @regimen_blueprint %>
+  <div class="row">
+    <div class="col">
+      <%= render "form", regimen_blueprint: @regimen_blueprint %>
+    </div>
+  </div>
 
-<br>
-
-<div>
-  <%= link_to "Show this regimen blueprint", @regimen_blueprint %> |
-  <%= link_to "Back to regimen blueprints", regimen_blueprints_path %>
+  <div class="row mt-3">
+    <div class="col">
+      <%= link_to "Show this regimen blueprint", @regimen_blueprint, class: "btn btn-outline-primary mr-2" %>
+      <%= link_to "Back to regimen blueprints", regimen_blueprints_path, class: "btn btn-outline-secondary" %>
+    </div>
+  </div>
 </div>

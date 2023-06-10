@@ -1,12 +1,18 @@
-<div id="<%= dom_id regimen_blueprint %>">
-  <p>
+<div id="<%= dom_id regimen_blueprint %>" class="card mb-3">
+  <div class="card-header">
     <strong>Title:</strong>
     <%= regimen_blueprint.title %>
-  </p>
+  </div>
+  <div class="card-body">
+    <p class="card-text">
+      <strong>Duration:</strong>
+      <%= regimen_blueprint.duration %>
+    </p>
 
-  <p>
-    <strong>Duration:</strong>
-    <%= regimen_blueprint.duration %>
-  </p>
-
+    <% end_date = regimen_blueprint.duration %>
+    <p class="card-text">
+      <strong>End Date:</strong>
+      <%= end_date.to_s(:long) %> (in <%= distance_of_time_in_words(Time.current, end_date) %>)
+    </p>
+  </div>
 </div>
