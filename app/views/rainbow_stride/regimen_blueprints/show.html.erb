@@ -25,6 +25,57 @@
       </ul>
     </div>
   </div>
+  <div class="my-4"></div>
+  <h2>Workouts for <%= @regimen_blueprint.title %></h2>
+
+  <% if @workouts.present? %>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Start Time</th>
+        <th scope="col">End Time</th>
+        <th scope="col">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @workouts.each do |workout| %>
+        <tr>
+          <td><%= workout.id %></td>
+          <td><%= workout.start_time %></td>
+          <td><%= workout.end_time %></td>
+          <td>
+            <%= link_to 'Show', workout_path(workout), class: 'btn btn-primary btn-sm me-1' %>
+            <%#= link_to 'Edit', edit_workout_path(workout), class: 'btn btn-secondary btn-sm me-1' %>
+            <%= link_to 'Destroy', workout_path(workout), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="alert alert-warning" role="alert">
+      No workouts found for this blueprint.
+    </div>
+  <% end %>
+
+
+  <div class="row mt-4">
+    <div class="col">
+      <h2>Exercise Progress</h2>
+      <% @workout_exercise_logs.each do |exercise, data| %>
+        <h4><%= exercise %></h4>
+        <%= line_chart [
+                         {name: "Weight", data: data[:weights]},
+                         {name: "Repetitions", data: data[:repetitions]}
+                       ],
+                       colors: ['#b00', '#00b'],
+                       dataset: { borderWidth: 2 },
+                       library: { scales: { y: { beginAtZero: true } } }
+        %>
+      <% end %>
+    </div>
+  </div>
 
   <div class="row mt-3">
     <div class="col">

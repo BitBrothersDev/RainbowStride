@@ -4,11 +4,23 @@ module RainbowStride
 
     # GET /regimen_blueprints
     def index
-      @regimen_blueprints = RegimenBlueprint.all
+      @regimen_blueprints = current_user.regimen_blueprints
     end
 
     # GET /regimen_blueprints/1
     def show
+      @workouts = @regimen_blueprint.workouts
+
+      @workout_exercise_logs = Hash.new { |h, k| h[k] = { weights: {}, repetitions: {} } }
+
+      @workouts.each do |workout|
+        workout.exercise_logs.includes(:exercise).each do |log|
+          exercise_name = log.exercise.name
+
+          @workout_exercise_logs[exercise_name][:weights][workout.start_time.to_date] = log.weight
+          @workout_exercise_logs[exercise_name][:repetitions][workout.start_time.to_date] = log.repetitions
+        end
+      end
     end
 
     # GET /regimen_blueprints/new
@@ -22,7 +34,7 @@ module RainbowStride
 
     # POST /regimen_blueprints
     def create
-      @regimen_blueprint = RegimenBlueprint.new(regimen_blueprint_params)
+      @regimen_blueprint = current_user.regimen_blueprints.build(regimen_blueprint_params)
 
       if @regimen_blueprint.save
         redirect_to @regimen_blueprint, notice: "Regimen blueprint was successfully created."

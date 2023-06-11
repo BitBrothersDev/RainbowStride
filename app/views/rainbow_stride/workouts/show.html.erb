@@ -41,6 +41,8 @@
     </div>
   </div>
 
+  <%= link_to 'Finish workout', finish_workout_path(@workout), class: 'btn btn-primary' %>
+
   <% if @exercise_logs.any? %>
     <h3>Exercise logs:</h3>
     <table class="table table-striped">
