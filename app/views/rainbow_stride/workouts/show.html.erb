@@ -1,0 +1,105 @@
+<!-- app/views/rainbow_stride/workouts/show.html.erb -->
+<div class="container">
+  <h1>Workout: <%= @workout.regimen_blueprint.title %></h1>
+  <%= notice %>
+  <%= alert %>
+  <div class="card-columns">
+    <% @workout.regimen_blueprint.exercises.each do |exercise| %>
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title"><%= exercise.name %></h4>
+          <p class="card-text">Description or additional information about the exercise...</p>
+          <%= button_tag 'Start Exercise', class: 'btn btn-success start-exercise-button', 'data-exercise-id': exercise.id %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="modal" tabindex="-1" id="exercise-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Exercise</h5>
+        </div>
+        <div class="modal-body">
+          <p>Timer: <span id="timer">00:00</span></p>
+          <%= form_for([@workout, RainbowStride::ExerciseLog.new]) do |f| %>
+            <%= f.hidden_field :rainbow_stride_exercise_id %>
+            <div class="form-group">
+              <%= f.label :weight %>
+              <%= f.number_field :weight, step: 0.1, class: 'form-control' %>
+            </div>
+            <div class="form-group">
+              <%= f.label :repetitions %>
+              <%= f.number_field :repetitions, class: 'form-control' %>
+            </div>
+            <%= f.hidden_field :exercise_time %>
+            <%= f.submit 'Finish', class: 'btn btn-primary' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @exercise_logs.any? %>
+    <h3>Exercise logs:</h3>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Exercise</th>
+        <th>Weight</th>
+        <th>Repetitions</th>
+        <th>Rest Time</th>
+        <th>Exercise Time</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @exercise_logs.each do |log| %>
+        <tr>
+          <td><%= log.exercise.name %></td>
+          <td><%= log.weight %></td>
+          <td><%= log.repetitions %></td>
+          <td><%= log.rest_time %></td>
+          <td><%= log.exercise_time %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% end %>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let exerciseModal = document.getElementById("exercise-modal")
+        let timerElement = document.getElementById("timer");
+        let exerciseTimeField = document.querySelector("input[name$='[exercise_time]']");
+        let exerciseIdField = document.querySelector("input[name$='[rainbow_stride_exercise_id]']");
+        let exerciseStartTime;
+
+        document.querySelectorAll(".start-exercise-button").forEach(function (button) {
+            button.addEventListener("click", function (e) {
+                exerciseIdField.value = e.target.getAttribute("data-exercise-id");
+                exerciseModal.style.display = "block";
+                exerciseStartTime = new Date();
+                startTimer();
+            });
+        });
+
+        function startTimer() {
+            let duration = parseInt((new Date() - exerciseStartTime) / 1000);
+            let minutes = parseInt(duration / 60);
+            let seconds = duration % 60;
+
+            timerElement.innerHTML = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+            exerciseTimeField.value = duration;
+            setTimeout(startTimer, 1000);
+        }
+
+        window.onclick = function (event) {
+            if (event.target == exerciseModal) {
+                exerciseModal.style.display = "none";
+            }
+        }
+    });
+</script>
