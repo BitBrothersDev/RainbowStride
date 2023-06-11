@@ -24,4 +24,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 7.0.5"
   spec.add_dependency "haml"
+  spec.add_dependency "chartkick", ">= 5.0.2"
+  spec.add_dependency "groupdate", ">= 6.2.1"
 end

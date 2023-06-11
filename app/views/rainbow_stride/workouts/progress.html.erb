@@ -1,0 +1,19 @@
+<div class="container">
+  <h1>Exercise Progress</h1>
+
+  <h2>Repetitions</h2>
+  <%= line_chart @repetitions_by_date %>
+
+  <h2>Weights</h2>
+  <%= line_chart @weights_by_date %>
+
+  <%= line_chart({ "2022-01-01": 1, "2022-01-02": 2, "2022-01-03": 3 }) %>
+</div>
+
+<% @blueprint_data.each do |blueprint, exercise_data| %>
+  <h3><%= blueprint %></h3>
+  <% exercise_data[:reps].each do |exercise, reps_data| %>
+    <h4><%= exercise %></h4>
+    <%= line_chart [{name: "Repetitions", data: reps_data}, {name: "Weight", data: exercise_data[:weights][exercise]}], colors: ['#b00', '#00b'], dataset: { borderWidth: 2 }, library: { scales: { y: { beginAtZero: true } } } %>
+  <% end %>
+<% end %>
