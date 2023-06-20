@@ -1,10 +1,10 @@
-<%= form_with(model: effort_stage, local: true, html: { class: 'needs-validation', novalidate: true }) do |form| %>
-  <% if effort_stage.errors.any? %>
+<%= form_with(model: level, local: true, html: { class: 'needs-validation', novalidate: true }) do |form| %>
+  <% if level.errors.any? %>
     <div class="alert alert-danger">
-      <h2><%= pluralize(effort_stage.errors.count, "error") %> prohibited this effort_stage from being saved:</h2>
+      <h2><%= pluralize(level.errors.count, "error") %> prohibited this level from being saved:</h2>
 
       <ul>
-        <% effort_stage.errors.each do |error| %>
+        <% level.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>

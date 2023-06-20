@@ -1,0 +1,23 @@
+.container
+  %h1 Rainbow Stride Levels
+
+  .table-responsive
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Name
+          %th Created At
+          %th Updated At
+          %th Actions
+      %tbody
+        - @levels.each do |level|
+          %tr
+            %td= level.name
+            %td= level.created_at
+            %td= level.updated_at
+            %td
+              = link_to 'Show', level_path(level), class: 'btn btn-primary btn-sm'
+              = link_to 'Edit', edit_level_path(level), class: 'btn btn-secondary btn-sm'
+              = link_to 'Delete', level_path(level), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+
+  = link_to 'New Level', new_level_path, class: 'btn btn-success'

@@ -5,11 +5,11 @@
     </div>
   <% end %>
 
-  <%= render @effort_stage %>
+  <%= render @level %>
 
   <h2 class="mt-4">Exercises:</h2>
   <div class="row">
-    <% @effort_stage.exercises.each do |exercise| %>
+    <% @level.exercises.each do |exercise| %>
       <div class="col-md-4">
         <%= link_to exercise, class: 'text-decoration-none text-dark' do %>
           <div class="card mb-4">
@@ -17,7 +17,7 @@
               <h5 class="card-title"><%= exercise.name %></h5>
               <p class="card-text">
                 <strong>User:</strong> <%= exercise.user.to_s %><br>
-                <strong>Effort Stage:</strong> <%= exercise.rainbow_stride_effort_stage&.name %>
+                <strong>Level:</strong> <%= exercise.rainbow_stride_level&.name %>
               </p>
             </div>
           </div>
@@ -27,8 +27,8 @@
   </div>
 
   <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1030;">
-    <%= link_to "Edit this effort stage", edit_effort_stage_path(@effort_stage), class: 'btn btn-warning me-3' %>
-    <%= link_to "Back to effort stages", effort_stages_path, class: 'btn btn-secondary ms-3' %>
-    <%= button_to "Destroy this effort stage", @effort_stage, method: :delete, class: 'btn btn-danger ms-3' %>
+    <%= link_to "Edit this level", edit_level_path(@level), class: 'btn btn-warning me-3' %>
+    <%= link_to "Back to levels", levels_path, class: 'btn btn-secondary ms-3' %>
+    <%= button_to "Destroy this level", @level, method: :delete, class: 'btn btn-danger ms-3' %>
   </div>
 </div>

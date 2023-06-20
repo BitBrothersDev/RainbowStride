@@ -1,4 +1,4 @@
 module RainbowStride
-  module RegimenBlueprintsHelper
+  module PlansHelper
   end
 end

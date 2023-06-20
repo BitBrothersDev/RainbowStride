@@ -1,16 +1,15 @@
 module RainbowStride
   class WorkoutsController < ApplicationController
-    before_action :authenticate_user!
     def index
       @workouts = current_user.workouts.order(created_at: :desc)
     end
 
     def new
-      @regimen_blueprints = RegimenBlueprint.all
+      @plans = Plan.all
     end
 
     def create
-      @workout = current_user.workouts.new(rainbow_stride_regimen_blueprint_id: params[:rainbow_stride_regimen_blueprint_id], start_time: Time.now)
+      @workout = current_user.workouts.new(rainbow_stride_plan_id: params[:rainbow_stride_plan_id], start_time: Time.now)
       @workout.save!
       redirect_to workout_path(@workout)
     end
@@ -21,7 +20,7 @@ module RainbowStride
       @repetitions_by_date = ExerciseLog.joins(:exercise).where(rainbow_stride_exercises: { user_id: current_user.id }).group_by_week(:created_at).sum(:repetitions)
       @weights_by_date = ExerciseLog.joins(:exercise).where(rainbow_stride_exercises: { user_id: current_user.id }).group_by_week(:created_at).sum(:weight)
 
-      @blueprints = current_user.regimen_blueprints
+      @blueprints = current_user.plans
       @blueprint_data = {}
 
       @blueprints.each do |blueprint|

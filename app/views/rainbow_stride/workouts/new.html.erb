@@ -2,8 +2,8 @@
 <div class="container">
   <h1>Start a new workout</h1>
   <div class="list-group">
-    <% @regimen_blueprints.each do |regimen| %>
-      <%= button_to regimen.title, {controller: "workouts", action: "create", rainbow_stride_regimen_blueprint_id: regimen.id}, method: :post, class: 'list-group-item list-group-item-action' %>
+    <% @plans.each do |plan| %>
+      <%= button_to plan.title, {controller: "workouts", action: "create", rainbow_stride_plan_id: plan.id}, method: :post, class: 'list-group-item list-group-item-action' %>
     <% end %>
   </div>
 </div>

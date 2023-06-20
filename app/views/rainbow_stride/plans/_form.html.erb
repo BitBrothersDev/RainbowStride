@@ -1,10 +1,10 @@
-<%= form_with(model: regimen_blueprint, local: true, html: { class: 'needs-validation', novalidate: true }) do |form| %>
-  <% if regimen_blueprint.errors.any? %>
+<%= form_with(model: plan, local: true, html: { class: 'needs-validation', novalidate: true }) do |form| %>
+  <% if plan.errors.any? %>
     <div class="alert alert-danger">
-      <h2><%= pluralize(regimen_blueprint.errors.count, "error") %> prohibited this regimen_blueprint from being saved:</h2>
+      <h2><%= pluralize(plan.errors.count, "error") %> prohibited this plan from being saved:</h2>
 
       <ul>
-        <% regimen_blueprint.errors.each do |error| %>
+        <% plan.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -28,14 +28,14 @@
   </div>
 
   <div class="form-group">
-    <%= label_tag :effort_stage_id, "Effort Stage" %>
-    <%= select_tag 'effort_stage_id', options_from_collection_for_select(RainbowStride::EffortStage.all, :id, :name, { include_blank: 'Please select an effort stage' }), { class: 'form-control', id: 'effort-stage-select', name: nil } %>
+    <%= label_tag :level_id, "Level" %>
+    <%= select_tag 'level_id', options_from_collection_for_select(RainbowStride::Level.all, :id, :name, { include_blank: 'Please select an level' }), { class: 'form-control', id: 'level-select', name: nil } %>
   </div>
 
   <div class="form-group" id="exercises-container">
-    <% RainbowStride::EffortStage.all.each do |effort_stage| %>
-      <% effort_stage.exercises.each do |exercise| %>
-        <div class="form-check" data-effort-stage-id="<%= effort_stage.id %>">
+    <% RainbowStride::Level.all.each do |level| %>
+      <% level.exercises.each do |exercise| %>
+        <div class="form-check" data-level-id="<%= level.id %>">
           <%= form.check_box :exercise_ids, {multiple: true, class: 'form-check-input'}, exercise.id, nil %>
           <%= form.label "exercise_ids_#{exercise.id}", exercise.name, class: 'form-check-label' %>
         </div>
@@ -53,28 +53,28 @@
         const exercisesContainer = document.getElementById('exercises-container');
         const exercisesChecks = exercisesContainer.querySelectorAll(".form-check");
         const selectedExercises = document.getElementById('selected-exercises');
-        const effortStageSelect = document.getElementById('effort-stage-select');
-        const selectedExerciseIds = <%= @regimen_blueprint.exercise_ids.present? ? @regimen_blueprint.exercise_ids.to_json.html_safe : '[]' %>;
+        const levelSelect = document.getElementById('level-select');
+        const selectedExerciseIds = <%= @plan.exercise_ids.present? ? @plan.exercise_ids.to_json.html_safe : '[]' %>;
 
         exercisesChecks.forEach(ele => ele.style.display = "none");
 
         if (selectedExerciseIds.length) {
             selectedExerciseIds.forEach(id => {
-                const input = document.getElementById(`regimen_blueprint_exercise_ids_${id}`);
+                const input = document.getElementById(`plan_exercise_ids_${id}`);
                 if (input) {
                     input.checked = true;
-                    const exerciseCheckbox = document.getElementById(`regimen_blueprint_exercise_ids_${id}`);
-                    const effortStageId = exerciseCheckbox.closest('.form-check').dataset.effortStageId;
-                    const effortStageLabel = document.querySelector(`#effort-stage-select option[value="${effortStageId}"]`).textContent;
-                    addExerciseToList(id, exerciseCheckbox.nextElementSibling.textContent, effortStageLabel);
+                    const exerciseCheckbox = document.getElementById(`plan_exercise_ids_${id}`);
+                    const levelId = exerciseCheckbox.closest('.form-check').dataset.levelId;
+                    const levelLabel = document.querySelector(`#level-select option[value="${levelId}"]`).textContent;
+                    addExerciseToList(id, exerciseCheckbox.nextElementSibling.textContent, levelLabel);
                 }
             });
         }
 
-        effortStageSelect.addEventListener('change', function() {
-            const selectedEffortStageId = this.value;
+        levelSelect.addEventListener('change', function() {
+            const selectedLevelId = this.value;
             exercisesChecks.forEach(ele => ele.style.display = "none");
-            const filteredExercises = exercisesContainer.querySelectorAll('.form-check[data-effort-stage-id="' + selectedEffortStageId + '"]');
+            const filteredExercises = exercisesContainer.querySelectorAll('.form-check[data-level-id="' + selectedLevelId + '"]');
             filteredExercises.forEach(ele => ele.style.display = "block");
         });
 
@@ -82,11 +82,11 @@
             if (e.target.tagName === 'INPUT') {
                 const exerciseId = e.target.value;
                 const exerciseLabel = document.querySelector(`label[for="${e.target.id}"]`).textContent;
-                const effortStageId = event.target.closest('.form-check').dataset.effortStageId;
-                const effortStageLabel = document.querySelector(`#effort-stage-select option[value="${effortStageId}"]`).textContent;
+                const levelId = event.target.closest('.form-check').dataset.levelId;
+                const levelLabel = document.querySelector(`#level-select option[value="${levelId}"]`).textContent;
 
                 if (e.target.checked) {
-                    addExerciseToList(exerciseId, exerciseLabel, effortStageLabel);
+                    addExerciseToList(exerciseId, exerciseLabel, levelLabel);
                 } else {
                     const listItem = selectedExercises.querySelector(`[data-exercise-id="${exerciseId}"]`);
                     selectedExercises.removeChild(listItem);
@@ -94,11 +94,11 @@
             }
         });
 
-        function addExerciseToList(exerciseId, exerciseLabel, effortStageLabel) {
+        function addExerciseToList(exerciseId, exerciseLabel, levelLabel) {
             const listItem = document.createElement('li');
             listItem.classList.add('list-group-item');
             listItem.dataset.exerciseId = exerciseId;
-            listItem.textContent = `${exerciseLabel} (${effortStageLabel})`;
+            listItem.textContent = `${exerciseLabel} (${levelLabel})`;
             selectedExercises.appendChild(listItem);
         }
     });

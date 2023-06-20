@@ -1,6 +1,6 @@
 RainbowStride::Engine.routes.draw do
-  resources :regimen_blueprints
-  resources :effort_stages
+  resources :plans
+  resources :levels
   resources :exercises
   resources :workouts, only: [:index, :show, :new, :create] do
     get 'progress', on: :collection

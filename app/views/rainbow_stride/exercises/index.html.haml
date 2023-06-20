@@ -6,7 +6,7 @@
       %thead
         %tr
           %th Name
-          %th Effort Stage
+          %th Level
           %th Created At
           %th Updated At
           %th Actions
@@ -14,7 +14,7 @@
         - @exercises.each do |exercise|
           %tr
             %td= exercise.name
-            %td= exercise.effort_stage.name
+            %td= exercise.level.name
             %td= exercise.created_at
             %td= exercise.updated_at
             %td

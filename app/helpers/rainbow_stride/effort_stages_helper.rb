@@ -1,4 +1,4 @@
 module RainbowStride
-  module EffortStagesHelper
+  module LevelsHelper
   end
 end

@@ -22,8 +22,8 @@
         </div>
         <div class="col-md-12">
           <div class="form-group">
-            <%= form.label :effort_stage_id, "Effort Stage" %>
-            <%= form.collection_select :rainbow_stride_effort_stage_id, RainbowStride::EffortStage.all, :id, :name, { prompt: 'Select Effort Stage' }, { class: 'form-control' } %>
+            <%= form.label :level_id, "Level" %>
+            <%= form.collection_select :rainbow_stride_level_id, RainbowStride::Level.all, :id, :name, { prompt: 'Select Level' }, { class: 'form-control' } %>
           </div>
         </div>
       </div>

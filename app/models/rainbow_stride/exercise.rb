@@ -1,9 +1,9 @@
 module RainbowStride
   class Exercise < ApplicationRecord
     belongs_to :user
-    belongs_to :effort_stage, :class_name => 'RainbowStride::EffortStage', foreign_key: :rainbow_stride_effort_stage_id
-    has_many :exercise_regimens, class_name: "RainbowStride::ExerciseRegimen", dependent: :destroy
-    has_many :regimen_blueprints, class_name: "RainbowStride::RegimenBlueprint", through: :exercise_regimens
+    belongs_to :level, :class_name => 'RainbowStride::Level', foreign_key: :rainbow_stride_level_id
+    has_many :exercise_plan, class_name: "RainbowStride::ExercisePlan", dependent: :destroy
+    has_many :plans, class_name: "RainbowStride::Plan", through: :exercise_plan
     has_many :exercise_logs, class_name: "RainbowStride::ExerciseLog"
   end
 end

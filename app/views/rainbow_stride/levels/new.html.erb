@@ -1,20 +1,19 @@
 <div class="container py-4">
   <div class="row">
     <div class="col-md-12 text-center mb-4">
-      <h1>Editing effort stage</h1>
+      <h1>New level</h1>
     </div>
   </div>
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="border shadow p-3">
-        <%= render 'form', effort_stage: @effort_stage %>
+        <%= render 'form', level: @level %>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12 text-center mt-3">
-      <%= link_to "Show this effort stage", @effort_stage, class: 'btn btn-info' %> |
-      <%= link_to "Back to effort stages", effort_stages_path, class: 'btn btn-secondary' %>
+      <%= link_to "Back to levels", levels_path, class: 'btn btn-secondary' %>
     </div>
   </div>
 </div>
