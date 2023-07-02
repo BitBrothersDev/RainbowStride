@@ -1,0 +1,97 @@
+<%= javascript_include_tag 'snap.svg-min' %>
+<h1>Generate SVG</h1>
+
+<!--<form id="user-data-form">-->
+<!--  <input type="number" id="weight" placeholder="Weight">-->
+<!--  <input type="number" id="height" placeholder="Height">-->
+<!--  <input type="number" id="stomach_size" placeholder="Stomach Size">-->
+<!--  <button type="button" onclick="generateSVG()">Generate</button>-->
+<!--</form>-->
+
+<button id="toggleButton">Toggle Front/Back</button>
+
+<div class="svg-preview d-flex justify-content-center">
+  <%= render 'rainbow_stride/home/svg/man_body_svg' %>
+</div>
+<!--<svg id="svg-container"></svg>-->
+
+<script>
+  document.getElementById('toggleButton').addEventListener('click', function() {
+    var frontBody = document.getElementById('man-body-front');
+    var backBody = document.getElementById('man-body-back');
+
+    if (frontBody.style.display !== 'none') {
+      frontBody.style.display = 'none';
+      backBody.style.display = 'block';
+    } else {
+      frontBody.style.display = 'block';
+      backBody.style.display = 'none';
+    }
+  });
+
+
+  function generateSVG() {
+    const htmlSvgElements = document.getElementsByClassName("body-map__body");
+
+    Array.from(htmlSvgElements).forEach((htmlSvgElement) => {
+      const snapSvg = Snap(htmlSvgElement);
+
+      // const paths = snapSvg.selectAll(".body-map__muscle");
+
+      function onMouseOver() {
+        this.attr({ fill: "red" });
+      }
+
+      function onMouseOut() {
+        this.attr({ fill: "blue" });
+      }
+      const groups = snapSvg.selectAll(".body-map__muscle");
+
+      groups.forEach((group) => {
+        group.hover(onGroupMouseOver, onGroupMouseOut);
+
+        // Select all paths inside this group
+        const paths = group.selectAll('path');
+
+        paths.forEach((path) => {
+          path.click(function(e) {
+            const name = this.data('name') || 'Path'; // Use a default name if not set
+            const value = prompt("Enter a value for " + name);
+            if (value !== null) {
+              // Loop over all paths inside the group of the clicked path
+              this.parent().selectAll('path').forEach((path) => {
+                // Display the value in the center of each path
+                const bbox = path.getBBox();
+                const text = Snap().text(bbox.cx, bbox.cy, value).attr({
+                  fill: '#000', // text color
+                  fontSize: '20px' // text size
+                });
+                // Append the text element to the same group as the path element
+                path.parent().append(text);
+              });
+            }
+          });
+        });
+      });
+
+      function onGroupMouseOver() {
+        // Select all paths inside this group
+        let paths = this.selectAll('path');
+        paths.forEach((path) => {
+          onMouseOver.apply(path); // Apply the onMouseOver function on each path
+        });
+      }
+
+      function onGroupMouseOut() {
+        // Select all paths inside this group
+        let paths = this.selectAll('path');
+        paths.forEach((path) => {
+          onMouseOut.apply(path); // Apply the onMouseOut function on each path
+        });
+      }
+    });
+  }
+
+  // Call generateSVG() function after the page has loaded
+  window.addEventListener('DOMContentLoaded', generateSVG);
+</script>

@@ -18,6 +18,8 @@
             = link_to "Workout", workouts_path, class: 'nav-link'
           %li.nav-item
             = link_to "Workout Progress", progress_workouts_path, class: 'nav-link'
+          %li.nav-item
+            = link_to "You", generate_svg_path, class: 'nav-link'
         .d-flex
           %ul.navbar-nav.me-auto.mb-2.mb-lg-0
             - if current_user
