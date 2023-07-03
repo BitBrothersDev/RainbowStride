@@ -2,6 +2,7 @@ RainbowStride::Engine.routes.draw do
   resources :plans
   resources :levels
   resources :exercises
+  resources :measurements
   get :generate_svg, to: 'home#generate_svg'
   resources :workouts, only: [:index, :show, :new, :create] do
     get 'progress', on: :collection
