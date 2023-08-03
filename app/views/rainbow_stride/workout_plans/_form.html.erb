@@ -1,10 +1,10 @@
-<%= form_with(model: plan, local: true, html: { class: 'needs-validation', novalidate: true }) do |form| %>
-  <% if plan.errors.any? %>
+<%= form_with(model: workout_plan, local: true, html: { class: 'needs-validation', novalidate: true }) do |form| %>
+  <% if workout_plan.errors.any? %>
     <div class="alert alert-danger">
-      <h2><%= pluralize(plan.errors.count, "error") %> prohibited this plan from being saved:</h2>
+      <h2><%= pluralize(workout_plan.errors.count, "error") %> prohibited this workout_plan from being saved:</h2>
 
       <ul>
-        <% plan.errors.each do |error| %>
+        <% workout_plan.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -54,16 +54,16 @@
         const exercisesChecks = exercisesContainer.querySelectorAll(".form-check");
         const selectedExercises = document.getElementById('selected-exercises');
         const levelSelect = document.getElementById('level-select');
-        const selectedExerciseIds = <%= @plan.exercise_ids.present? ? @plan.exercise_ids.to_json.html_safe : '[]' %>;
+        const selectedExerciseIds = <%= @workout_plan.exercise_ids.present? ? @workout_plan.exercise_ids.to_json.html_safe : '[]' %>;
 
         exercisesChecks.forEach(ele => ele.style.display = "none");
 
         if (selectedExerciseIds.length) {
             selectedExerciseIds.forEach(id => {
-                const input = document.getElementById(`plan_exercise_ids_${id}`);
+                const input = document.getElementById(`workout_plan_exercise_ids_${id}`);
                 if (input) {
                     input.checked = true;
-                    const exerciseCheckbox = document.getElementById(`plan_exercise_ids_${id}`);
+                    const exerciseCheckbox = document.getElementById(`workout_plan_exercise_ids_${id}`);
                     const levelId = exerciseCheckbox.closest('.form-check').dataset.levelId;
                     const levelLabel = document.querySelector(`#level-select option[value="${levelId}"]`).textContent;
                     addExerciseToList(id, exerciseCheckbox.nextElementSibling.textContent, levelLabel);

@@ -12,6 +12,8 @@
 <% render 'layouts/rainbow_stride/shared/navbar' %>
 <%= yield :header %>
  <div data-controller="rainbow_stride--hello" class="container">
+   <%= notice %>
+   <%= alert %>
    <%= yield %>
  </div>
 

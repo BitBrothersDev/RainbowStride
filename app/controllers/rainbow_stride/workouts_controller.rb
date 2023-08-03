@@ -42,7 +42,7 @@ module RainbowStride
 
     def show
       @workout = Workout.find(params[:id])
-      @exercise_logs = @workout.exercise_logs
+      @exercise_logs = @workout.exercise_logs.order('created_at DESC')
     end
 
     def finish

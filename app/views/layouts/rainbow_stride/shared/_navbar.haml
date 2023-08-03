@@ -7,19 +7,19 @@
       #navbarSupportedContent.collapse.navbar-collapse
         %ul.navbar-nav.me-auto.mb-2.mb-lg-0
           %li.nav-item
-            = link_to "Home", main_app.root_path, class: 'nav-link'
+            = link_to "Home", main_app.root_path, class: "nav-link #{'active' if current_page?(main_app.root_path)}"
           %li.nav-item
-            = link_to "Exercises", exercises_path, class: 'nav-link'
+            = link_to "Exercises", exercises_path, class: "nav-link #{'active' if current_page?(exercises_path)}"
           %li.nav-item
-            = link_to "Levels", levels_path, class: 'nav-link'
+            = link_to "Workout Plans", workout_plans_path, class: "nav-link #{'active' if current_page?(workout_plans_path)}"
           %li.nav-item
-            = link_to "Plans", plans_path, class: 'nav-link'
+            = link_to "Workout", workouts_path, class: "nav-link #{'active' if current_page?(workouts_path)}"
           %li.nav-item
-            = link_to "Workout", workouts_path, class: 'nav-link'
+            = link_to "Measurements", measurements_path, class: "nav-link #{'active' if current_page?(measurements_path)}"
           %li.nav-item
-            = link_to "Workout Progress", progress_workouts_path, class: 'nav-link'
+            = link_to "Workout Progress", progress_workouts_path, class: "nav-link #{'active' if current_page?(progress_workouts_path)}"
           %li.nav-item
-            = link_to "You", generate_svg_path, class: 'nav-link'
+            = link_to "You", generate_svg_path, class: "nav-link #{'active' if current_page?(generate_svg_path)}"
         .d-flex
           %ul.navbar-nav.me-auto.mb-2.mb-lg-0
             - if current_user

@@ -1,5 +1,5 @@
 <%= javascript_include_tag 'snap.svg-min' %>
-<h1>Generate SVG</h1>
+<h1>Measure yourself</h1>
 
 <!--<form id="user-data-form">-->
 <!--  <input type="number" id="weight" placeholder="Weight">-->
@@ -14,7 +14,7 @@
       <h3>Measurements</h3>
 
       <% @measurements.each do |type, measurements| %>
-        <h4><%= type.capitalize %></h4>
+        <h4><%= type&.name %></h4>
         <table class="table table-bordered">
           <thead>
           <tr>
@@ -31,7 +31,7 @@
               <td>
                 <%= link_to 'Show', measurement %> |
                 <%= link_to 'Edit', edit_measurement_path(measurement) %> |
-                <%= link_to 'Destroy', measurement, method: :delete, data: { confirm: 'Are you sure?' } %>
+                <%= button_to 'Destroy', measurement, method: :delete, data: { 'turbo': false, confirm: 'Are you sure?' } %>
               </td>
             </tr>
           <% end %>

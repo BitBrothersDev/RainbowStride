@@ -1,0 +1,55 @@
+.container
+  %h1 Measurements
+  %a.btn.btn-primary.mb-3{"data-bs-toggle" => "modal", "data-bs-target" => "#addMeasurementModal"} Add Measurement
+  .d-flex.align-items-start
+    .nav.flex-column.nav-pills.me-3{id: "v-pills-tab", role: "tablist", "aria-orientation" => "vertical"}
+      - @measurements.order('created_at DESC').group_by(&:measurement_type).each_with_index do |(type, _), index|
+        %button.nav-link{class: ("active" if index.zero?), id: "v-pills-#{type.id}-tab", "data-bs-toggle" => "pill", "data-bs-target" => "#v-pills-#{type.id}", type: "button", role: "tab", "aria-controls" => "v-pills-#{type.id}", "aria-selected" => (index.zero? ? "true" : "false")}= type.name
+    .tab-content.w-100{id: "v-pills-tabContent"}
+      - @measurements.order('created_at DESC').group_by(&:measurement_type).each_with_index do |(type, measurements), index|
+        .tab-pane.fade{class: ("show active" if index.zero?), id: "v-pills-#{type.id}", role: "tabpanel", "aria-labelledby" => "v-pills-#{type.id}-tab"}
+          .row
+            .col-md-6
+              %table.table.table-striped
+                %thead
+                  %tr
+                    %th #
+                    %th Measurement Type
+                    %th Value
+                    %th Date
+                    %th Actions
+                %tbody
+                  - measurements.each_with_index do |measurement, index|
+                    %tr
+                      %td= index + 1
+                      %td= measurement.measurement_type.name
+                      %td= measurement.value
+                      %td= measurement.date
+                      %td
+                        %a.btn.btn-warning{href: edit_measurement_path(measurement)} Edit
+                        %a.btn.btn-danger{href: measurement_path(measurement), method: :delete, data: {confirm: "Are you sure?"}} Delete
+            .col-md-6
+              = line_chart @charts_data[type.name]
+
+  .modal.fade#addMeasurementModal
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %h5.modal-title Add Measurement
+          %button.close{"data-bs-dismiss" => "modal", "aria-label" => "Close"}
+            %span{"aria-hidden" => "true"} &times;
+        .modal-body
+          = form_with(model: @measurement, url: measurements_path, local: true) do |f|
+            .form-group
+              = f.label :measurement_type, class: 'form-label'
+              = f.collection_select :rainbow_stride_measurement_type_id, RainbowStride::MeasurementType.all, :id, :to_s, {prompt: "Select a measurement type"}, {class: 'form-control'}
+            .form-group
+              = f.label :value, class: 'form-label'
+              = f.number_field :value, class: 'form-control', step: 'any'
+            .form-group
+              = f.label :date, class: 'form-label'
+              = f.date_field :date, class: 'form-control', value: Date.today
+
+            .modal-footer
+              %a.btn.btn-secondary{"data-bs-dismiss" => "modal"} Close
+              = f.submit 'Save', class: 'btn btn-primary'

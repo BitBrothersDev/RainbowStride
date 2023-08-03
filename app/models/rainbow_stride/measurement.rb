@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module RainbowStride
   class Measurement < ApplicationRecord
     belongs_to :user, class_name: 'RainbowGate::User', foreign_key: :user_id
 
-    enum measurement_type: { biceps: 'biceps', chest: 'chest', waist: 'waist', thigh: 'thigh', forearms: 'forearms' }
+    belongs_to :measurement_type, class_name: 'RainbowStride::MeasurementType', foreign_key: :rainbow_stride_measurement_type_id
   end
 end

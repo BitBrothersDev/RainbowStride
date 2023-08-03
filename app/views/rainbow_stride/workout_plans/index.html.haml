@@ -1,0 +1,25 @@
+.container
+  %h1 Rainbow Stride Plans
+
+  .table-responsive
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Title
+          %th Duration
+          %th Created At
+          %th Updated At
+          %th Actions
+      %tbody
+        - @workout_plans.each do |workout_plan|
+          %tr
+            %td= workout_plan.title
+            %td= workout_plan.duration
+            %td= workout_plan.created_at
+            %td= workout_plan.updated_at
+            %td
+              = link_to 'Show', workout_plan_path(workout_plan), class: 'btn btn-primary btn-sm'
+              = link_to 'Edit', edit_workout_plan_path(workout_plan), class: 'btn btn-secondary btn-sm'
+              = link_to 'Delete', workout_plan_path(workout_plan), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+
+  = link_to 'New Plan', new_workout_plan_path, class: 'btn btn-success'

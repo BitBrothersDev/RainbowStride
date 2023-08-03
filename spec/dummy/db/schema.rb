@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_11_084803) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_01_192504) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "rainbow_stride_levels", force: :cascade do |t|
+  create_table "rainbow_stride_effort_stages", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -35,11 +35,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_11_084803) do
 
   create_table "rainbow_stride_exercise_regimen", force: :cascade do |t|
     t.bigint "exercise_id", null: false
-    t.bigint "plan_id", null: false
+    t.bigint "regimen_blueprint_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["exercise_id"], name: "index_rainbow_stride_exercise_regimen_on_exercise_id"
-    t.index ["plan_id"], name: "index_rainbow_stride_exercise_regimen_on_plan_id"
+    t.index ["regimen_blueprint_id"], name: "index_rainbow_stride_exercise_regimen_on_regimen_blueprint_id"
   end
 
   create_table "rainbow_stride_exercises", force: :cascade do |t|
@@ -47,28 +47,53 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_11_084803) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "rainbow_stride_level_id"
-    t.index ["rainbow_stride_level_id"], name: "index_exercises_on_level_id"
+    t.bigint "rainbow_stride_effort_stage_id"
+    t.index ["rainbow_stride_effort_stage_id"], name: "index_exercises_on_effort_stage_id"
     t.index ["user_id"], name: "index_rainbow_stride_exercises_on_user_id"
   end
 
-  create_table "rainbow_stride_plans", force: :cascade do |t|
+  create_table "rainbow_stride_measurement_types", force: :cascade do |t|
+    t.string "name"
+    t.string "unit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rainbow_stride_measurements", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.float "value"
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "rainbow_stride_measurement_type_id", null: false
+    t.index ["rainbow_stride_measurement_type_id"], name: "index_rs_m_on_rs_mt_id"
+    t.index ["user_id"], name: "index_rainbow_stride_measurements_on_user_id"
+  end
+
+  create_table "rainbow_stride_rainbow_stride_measurement_types", force: :cascade do |t|
+    t.string "name"
+    t.string "unit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rainbow_stride_regimen_blueprints", force: :cascade do |t|
     t.string "title"
     t.datetime "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
-    t.index ["user_id"], name: "index_rainbow_stride_plans_on_user_id"
+    t.index ["user_id"], name: "index_rainbow_stride_regimen_blueprints_on_user_id"
   end
 
   create_table "rainbow_stride_workouts", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "rainbow_stride_plan_id", null: false
+    t.bigint "rainbow_stride_regimen_blueprint_id", null: false
     t.datetime "start_time"
     t.datetime "end_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["rainbow_stride_plan_id"], name: "index_workouts_on_plan_id"
+    t.index ["rainbow_stride_regimen_blueprint_id"], name: "index_workouts_on_regimen_blueprint_id"
     t.index ["user_id"], name: "index_rainbow_stride_workouts_on_user_id"
   end
 
@@ -104,9 +129,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_11_084803) do
   add_foreign_key "rainbow_stride_exercise_logs", "rainbow_stride_exercises"
   add_foreign_key "rainbow_stride_exercise_logs", "rainbow_stride_workouts"
   add_foreign_key "rainbow_stride_exercise_regimen", "rainbow_stride_exercises", column: "exercise_id"
-  add_foreign_key "rainbow_stride_exercise_regimen", "rainbow_stride_plans", column: "plan_id"
-  add_foreign_key "rainbow_stride_exercises", "rainbow_stride_levels"
+  add_foreign_key "rainbow_stride_exercise_regimen", "rainbow_stride_regimen_blueprints", column: "regimen_blueprint_id"
+  add_foreign_key "rainbow_stride_exercises", "rainbow_stride_effort_stages"
   add_foreign_key "rainbow_stride_exercises", "users"
-  add_foreign_key "rainbow_stride_workouts", "rainbow_stride_plans"
+  add_foreign_key "rainbow_stride_measurements", "rainbow_stride_measurement_types"
+  add_foreign_key "rainbow_stride_measurements", "users"
+  add_foreign_key "rainbow_stride_workouts", "rainbow_stride_regimen_blueprints"
   add_foreign_key "rainbow_stride_workouts", "users"
 end
