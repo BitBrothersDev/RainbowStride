@@ -1,12 +1,11 @@
-<!-- app/views/rainbow_stride/workouts/show.html.erb -->
-<h1>Workout: <%= @workout.workout_plan.title %></h1>
+<h4>Workout: <%= @workout.workout_plan.title %></h4>
 <%= notice %>
 <%= alert %>
 <div class="card-columns">
   <% @workout.workout_plan.exercises.each do |exercise| %>
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title"><%= exercise.name %></h4>
+        <b class="card-title"><%= exercise.name %></b>
         <p class="card-text">Description or additional information about the exercise...</p>
         <%= button_tag 'Start Exercise', class: 'btn btn-success start-exercise-button', 'data-exercise-id': exercise.id %>
       </div>
@@ -40,10 +39,10 @@
   </div>
 </div>
 
-<%= link_to 'Finish workout', finish_workout_path(@workout), class: 'btn btn-primary' %>
+<%= link_to 'Finish workout', finish_workout_path(@workout), class: 'btn btn-primary mt-3' %>
 
 <% if @exercise_logs.any? %>
-  <h3>Exercise logs:</h3>
+  <h3 class="mt-4">Exercise logs:</h3>
   <table class="table table-striped">
     <thead>
     <tr>
