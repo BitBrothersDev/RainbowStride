@@ -10,7 +10,7 @@
         .tab-pane.fade{class: ("show active" if index.zero?), id: "v-pills-#{type.id}", role: "tabpanel", "aria-labelledby" => "v-pills-#{type.id}-tab"}
           .row
             .col-md-6
-              %table.table.table-striped
+              %table.table.table-striped.table-responsive
                 %thead
                   %tr
                     %th #
@@ -26,10 +26,12 @@
                       %td= measurement.value
                       %td= measurement.date
                       %td
-                        %a.btn.btn-warning{href: edit_measurement_path(measurement)} Edit
-                        %a.btn.btn-danger{href: measurement_path(measurement), method: :delete, data: {confirm: "Are you sure?"}} Delete
+                        %a.btn.btn-warning.btn-sm{href: edit_measurement_path(measurement)} Edit
+                        %a.btn.btn-danger.btn-sm{href: measurement_path(measurement), method: :delete, data: {confirm: "Are you sure?"}} Delete
             .col-md-6
-              = line_chart @charts_data[type.name]
+              .card
+                .card-body
+                  = line_chart @charts_data[type.name]
 
   .modal.fade#addMeasurementModal
     .modal-dialog
@@ -40,13 +42,13 @@
             %span{"aria-hidden" => "true"} &times;
         .modal-body
           = form_with(model: @measurement, url: measurements_path, local: true) do |f|
-            .form-group
+            .form-group.mb-3
               = f.label :measurement_type, class: 'form-label'
               = f.collection_select :rainbow_stride_measurement_type_id, RainbowStride::MeasurementType.all, :id, :to_s, {prompt: "Select a measurement type"}, {class: 'form-control'}
-            .form-group
+            .form-group.mb-3
               = f.label :value, class: 'form-label'
               = f.number_field :value, class: 'form-control', step: 'any'
-            .form-group
+            .form-group.mb-3
               = f.label :date, class: 'form-label'
               = f.date_field :date, class: 'form-control', value: Date.today
 

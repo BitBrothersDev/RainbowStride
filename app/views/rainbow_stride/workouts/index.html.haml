@@ -1,0 +1,21 @@
+%h1.text-center Workout history
+
+.row
+  .col-md-8.offset-md-2
+    .text-center.mt-3
+      = paginate @workouts
+
+    .list-group
+      - @workouts.each do |workout|
+        .list-group-item.list-group-item-action
+          .d-flex.w-100.justify-content-between
+            %h5.mb-1= "Workout: #{workout.workout_plan.title}"
+            %small= workout.start_time.strftime('%F')
+          %p.mb-1= "#{workout.start_time.strftime('%T')} - #{workout.end_time&.strftime('%T')}"
+          = link_to 'View Details', workout_path(workout.id), class: 'btn btn-outline-primary btn-sm'
+
+    .text-center.mt-3
+      = paginate @workouts
+
+    .text-center.mt-3
+      = link_to 'Start a new workout', new_workout_path, class: 'btn btn-primary'

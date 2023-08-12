@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'haml'
   spec.add_dependency 'rails', '>= 7.0.5'
   spec.add_dependency 'jquery-rails'
+  spec.add_dependency 'kaminari'
 end

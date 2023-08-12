@@ -16,12 +16,25 @@
           <th>User:</th>
           <td><%= exercise.user.to_s %></td>
         </tr>
-        <tr>
-          <th>Level:</th>
-          <td><%= exercise.level&.name %></td>
-        </tr>
         </tbody>
       </table>
     </div>
   </div>
+  <% exercise.exercise_levels.each do |level| %>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <%= level.level.name %>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Description:</h5>
+            <p class="card-text"><%= level.description %></p>
+            <h5 class="card-title">How to do:</h5>
+            <p class="card-text"><%= level.how_to_do %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>

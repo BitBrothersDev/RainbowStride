@@ -26,6 +26,9 @@ module RainbowStride
     # GET /workout_plans/new
     def new
       @workout_plan = WorkoutPlan.new
+      @levels_with_exercises = Level.includes(:exercises).each_with_object({}) do |level, hash|
+        hash[level] = level.exercises
+      end
     end
 
     # GET /workout_plans/1/edit

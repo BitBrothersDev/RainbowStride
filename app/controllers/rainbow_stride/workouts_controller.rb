@@ -1,11 +1,12 @@
 module RainbowStride
   class WorkoutsController < ApplicationController
     def index
-      @workouts = current_user.workouts.order(created_at: :desc)
+      # @workouts = current_user.workouts.order(created_at: :desc).page(params[:page]).per(10)
+      @workouts = current_user.workouts.page(params[:page]).per(10)
     end
 
     def new
-      @plans = Plan.all
+      @workout_plans = WorkoutPlan.all
     end
 
     def create
@@ -20,7 +21,7 @@ module RainbowStride
       @repetitions_by_date = ExerciseLog.joins(:exercise).where(rainbow_stride_exercises: { user_id: current_user.id }).group_by_week(:created_at).sum(:repetitions)
       @weights_by_date = ExerciseLog.joins(:exercise).where(rainbow_stride_exercises: { user_id: current_user.id }).group_by_week(:created_at).sum(:weight)
 
-      @blueprints = current_user.plans
+      @blueprints = current_user.workout_plans
       @blueprint_data = {}
 
       @blueprints.each do |blueprint|

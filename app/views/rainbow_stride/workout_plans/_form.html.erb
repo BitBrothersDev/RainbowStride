@@ -1,50 +1,55 @@
 <%= form_with(model: workout_plan, local: true, html: { class: 'needs-validation', novalidate: true }) do |form| %>
   <% if workout_plan.errors.any? %>
-    <div class="alert alert-danger">
-      <h2><%= pluralize(workout_plan.errors.count, "error") %> prohibited this workout_plan from being saved:</h2>
-
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <h4 class="alert-heading"><%= pluralize(workout_plan.errors.count, "error") %> prohibited this workout_plan from being saved:</h4>
       <ul>
         <% workout_plan.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= form.label :title %>
-    <%= form.text_field :title, class: 'form-control' %>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= form.label :title %>
+        <%= form.text_field :title, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :duration %>
+        <%= form.datetime_field :duration, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :level_id, "Level" %>
+        <%= select_tag 'level_id', options_from_collection_for_select(RainbowStride::Level.all, :id, :name).insert(0, '<option value="">Please select a level</option>'.html_safe), { class: 'form-control', id: 'level-select', name: nil } %>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= label_tag :selected_exercises, "Selected Exercises" %>
+        <ul id="selected-exercises" class="list-group"></ul>
+      </div>
+
+      <div class="form-group" id="exercises-container">
+        <% RainbowStride::Level.all.each do |level| %>
+          <% level.exercises.each do |exercise| %>
+            <div class="form-check" data-level-id="<%= level.id %>">
+              <%= form.check_box :exercise_ids, {multiple: true, class: 'form-check-input'}, exercise.id, nil %>
+              <%= form.label "exercise_ids_#{exercise.id}", exercise.name, class: 'form-check-label' %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :duration %>
-    <%= form.datetime_field :duration, class: 'form-control' %>
-  </div>
-
-  <div class="form-group">
-    <%= label_tag :selected_exercises, "Selected Exercises" %>
-    <ul id="selected-exercises" class="list-group">
-    </ul>
-  </div>
-
-  <div class="form-group">
-    <%= label_tag :level_id, "Level" %>
-    <%= select_tag 'level_id', options_from_collection_for_select(RainbowStride::Level.all, :id, :name, { include_blank: 'Please select an level' }), { class: 'form-control', id: 'level-select', name: nil } %>
-  </div>
-
-  <div class="form-group" id="exercises-container">
-    <% RainbowStride::Level.all.each do |level| %>
-      <% level.exercises.each do |exercise| %>
-        <div class="form-check" data-level-id="<%= level.id %>">
-          <%= form.check_box :exercise_ids, {multiple: true, class: 'form-check-input'}, exercise.id, nil %>
-          <%= form.label "exercise_ids_#{exercise.id}", exercise.name, class: 'form-check-label' %>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
-
-  <div>
-    <%= form.submit class: 'btn btn-primary' %>
+  <div class="text-center mt-3">
+    <%= form.submit 'Create Workout Plan', class: 'btn btn-primary' %>
   </div>
 <% end %>
 
