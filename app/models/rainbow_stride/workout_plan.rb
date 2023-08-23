@@ -4,5 +4,6 @@ module RainbowStride
     has_many :workout_plan_exercises, dependent: :destroy, class_name: "RainbowStride::WorkoutPlanExercise"
     has_many :exercises, through: :workout_plan_exercises, class_name: "RainbowStride::Exercise"
     has_many :workouts, :class_name => 'RainbowStride::Workout', foreign_key: :rainbow_stride_plan_id
+    belongs_to :level, class_name: "RainbowStride::Level"
   end
 end

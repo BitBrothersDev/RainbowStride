@@ -69,7 +69,7 @@ module RainbowStride
 
       # Only allow a list of trusted parameters through.
       def workout_plan_params
-        params.require(:workout_plan).permit(:title, :duration, exercise_ids: [])
+        params.require(:workout_plan).permit(:title, :duration, :level_id, exercise_ids: [])
       end
   end
 end

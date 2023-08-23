@@ -31,7 +31,7 @@
                     Select Level
                   </div>
                   <div class="card-body">
-                    <%= select_tag "level_#{exercise.id}", options_from_collection_for_select(exercise.levels, :id, :name, exercise.levels.first.id), { class: 'form-control level-select', data: { exercise_id: exercise.id } } %>
+                    <%#= select_tag "level_#{exercise.id}", options_from_collection_for_select(exercise.levels, :id, :name, exercise.levels.first.id), { class: 'form-control level-select', data: { exercise_id: exercise.id } } %>
                     <% exercise.exercise_levels.each do |e_l| %>
                       <div id="exercise_level_<%= e_l.id %>" class="exercise-level-info" style="<%= 'display: none;' unless e_l == exercise.exercise_levels.first %>">
                         <h5 class="card-title">Description</h5>
