@@ -17,27 +17,41 @@
     <div class="col">
       <h2>Exercises</h2>
       <div class="accordion" id="exercisesAccordion">
-        <% @workout_plan.exercises.order(:name).each_with_index do |exercise, index| %>
+        <% @workout_plan.workout_plan_exercises.each_with_index do |wp_exercise, index| %>
           <div class="accordion-item">
             <h2 class="accordion-header" id="heading<%= index %>">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= index %>" aria-expanded="false" aria-controls="collapse<%= index %>">
-                <%= exercise.name %>
+                <%= wp_exercise.exercise.name %>
+                <span class="badge bg-info text-dark ms-3">
+                  reps:<%= wp_exercise.repetitions.to_i %>
+                </span>
+                <span class="badge bg-info text-dark ms-3">
+                  rounds:<%= wp_exercise.rounds.to_i %>
+                </span>
               </button>
             </h2>
             <div id="collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="heading<%= index %>" data-bs-parent="#exercisesAccordion">
               <div class="accordion-body">
                 <div class="card mb-3">
                   <div class="card-header">
-                    Select Level
+                    add info
                   </div>
                   <div class="card-body">
-                    <%#= select_tag "level_#{exercise.id}", options_from_collection_for_select(exercise.levels, :id, :name, exercise.levels.first.id), { class: 'form-control level-select', data: { exercise_id: exercise.id } } %>
-                    <% exercise.exercise_levels.each do |e_l| %>
-                      <div id="exercise_level_<%= e_l.id %>" class="exercise-level-info" style="<%= 'display: none;' unless e_l == exercise.exercise_levels.first %>">
-                        <h5 class="card-title">Description</h5>
-                        <p class="card-text"><%= e_l.description %></p>
-                        <h5 class="card-title">How to do</h5>
-                        <p class="card-text"><%= e_l.how_to_do %></p>
+                    <%= form_with model: wp_exercise, turbo: false, remote: true do |wpe| %>
+                      <div class="form-group">
+                        <%= wpe.label :repetitions %>
+                        <%= wpe.text_field :repetitions , class: 'form-control' %>
+                      </div>
+                      <div class="form-group">
+                        <%= wpe.label :rounds %>
+                        <%= wpe.text_field :rounds , class: 'form-control' %>
+                      </div>
+                      <div class="form-group">
+                        <%= wpe.label :weight %>
+                        <%= wpe.text_field :weight , class: 'form-control' %>
+                      </div>
+                      <div class="form-group">
+                        <%= wpe.submit class: 'btn btn-success' %>
                       </div>
                     <% end %>
                   </div>

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 RainbowStride::Engine.routes.draw do
+  resources :workout_plan_exercises, only: %i[update destroy]
   resources :workout_plans
   resources :levels
   resources :exercises
